@@ -21,7 +21,7 @@ list * init(list * head)
 
 int commonS(int c)
 {
-    return((c >= 'a') && (c <= 'z') || (c >= 'A') && (c <= 'Z') || (c >= '1') && (c <= '9'));
+    return(((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')) || ((c >= '1') && (c <= '9')));
 }
 
 int inList(list * head, char * buff)
@@ -47,16 +47,13 @@ char * extendbuff(char * buff, int * lenbuff)
     return newBuff;
 }
 list * addToList(list * head, char * buff, int lenbuff){
-    if(!inList(head, buff)){
         list * tmp = malloc(sizeof(*tmp));
-        tmp -> cnt = 1;
+        tmp -> cnt = lenbuff;
         tmp -> next = head;
         tmp -> str = malloc(lenbuff + 1);
         strncpy(tmp -> str, buff, lenbuff);
         tmp -> str[lenbuff] = 0;
         return tmp;
-    }
-    return head;
 }
 
 int findMax(list * head)
