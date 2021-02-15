@@ -46,16 +46,16 @@ char * extendbuff(char * buff, int * lenbuff)
     free(buff);
     return newBuff;
 }
-list * addToList(list * head, char * buff, int lenbuff){
+/*list * addToList(list * head, char * buff, int lenbuff){
         list * tmp = malloc(sizeof(*tmp));
         tmp -> cnt = lenbuff;
-        tmp -> next = head;
+        tmp -> next = head;								#######dont need this staff######
         tmp -> str = malloc(lenbuff + 1);
         strncpy(tmp -> str, buff, lenbuff);
         tmp -> str[lenbuff] = 0;
         return tmp;
 }
-
+*/
 int findMax(list * head)
 {
     int key = 0;
