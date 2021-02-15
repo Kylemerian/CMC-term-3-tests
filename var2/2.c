@@ -27,14 +27,14 @@ int findCmd(char ** arr)
 void func(int argc, char ** arr)
 {
     int i = 0;
+    int check;
     int lenbuff = 8;
     char * buff = malloc(8);
-    int c;
+    char c;
     int fd1[2], fd2[2];
     pipe(fd1);
     pipe(fd2);
     if(fork() == 0){
-        printf("%s", arr[1]);
         close(fd2[0]);
         close(fd2[1]);
         close(fd1[0]);
@@ -49,7 +49,7 @@ void func(int argc, char ** arr)
         close(fd2[0]);
         dup2(fd1[0], 0);
         dup2(fd2[1], 1);
-        while((c = read(0, &c, 1)) != 0){
+        while((check = read(0, &c, 1)) != 0){
             if(c != '\n'){
                 if(i >= lenbuff)
                     buff = extendbuff(buff, &lenbuff);
@@ -66,7 +66,6 @@ void func(int argc, char ** arr)
         write(1, &c, 1);
     }
     else if(fork() == 0){
-        printf("%s", arr[findCmd(arr)]);
         close(fd1[0]);
         close(fd1[1]);
         close(fd2[1]);
