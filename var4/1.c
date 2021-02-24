@@ -24,27 +24,31 @@ int compare(char *w1, char *w2)
     return 0;
 }
 
-void sort(struct list *l)
+void swap(struct list *tmp1, struct list *tmp2)
 {
     int tmp_c;
     char *tmp_w;
+    tmp_c = tmp1->count;
+    tmp_w = tmp1->word;
+    tmp1->count = tmp2->count;
+    tmp1->word = tmp2->word;
+    tmp2->count = tmp_c;
+    tmp2->word = tmp_w;
+}
+
+void sort(struct list *l)
+{
     struct list *tmp1 = l, *tmp2 = l;
     while (tmp1 != NULL)
     {
-        while (tmp2->next != NULL)
+        while (tmp2 != NULL)
         {
-            if (tmp1->count < tmp2->count)
-            {
-                tmp_c = tmp1->count;
-                tmp_w = tmp1->word;
-                tmp1->count = tmp2->next->count;
-                tmp1->word = tmp2->next->word;
-                tmp2->next->count = tmp_c;
-                tmp2->next->word = tmp_w;
-            }
+            if ((tmp1->count > tmp2->count) && (tmp1 != tmp2))
+                swap(tmp1, tmp2);
             tmp2 = tmp2->next;
         }
         tmp1 = tmp1->next;
+        tmp2 = l;
     }
 }
 
@@ -52,6 +56,7 @@ void add(struct list **l, char *buffer, int size)
 {
     int i;
     if (buffer[0] != '\0') {
+        buffer[size] = '\0';
         if (*l != NULL) {
             if (compare((*l)->word, buffer))
                 (*l)->count++;
@@ -61,7 +66,7 @@ void add(struct list **l, char *buffer, int size)
         else
         {
             *l = malloc(sizeof(struct list));
-            (*l)->word = malloc(sizeof(char) * size);
+            (*l)->word = malloc(sizeof(char) * (size + 1));
             (*l)->count = 1;
             (*l)->next = NULL;
             for (i = 0; i < size; ++i)
@@ -79,7 +84,7 @@ int main()
     char *buffer = malloc(sizeof(char) * tmp_size);
     char *tmp = NULL;
     struct list *l = NULL;
-    while ((c = getchar()) != '\n')
+    while ((c = getchar()) != EOF)
     {
         if (((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'))
             || ((c >= '0') && (c <= '9')))
@@ -98,14 +103,12 @@ int main()
         }
         else
         {
-            buffer[i] = '\0';
-            add(&l, buffer, i + 1);
+            add(&l, buffer, i);
             tmp_size = BUFF_SIZE;
             i = 0;
         }
     }
-    buffer[i] = '\0';
-    add(&l, buffer, i + 1);
+    add(&l, buffer, i);
     sort(l);
     i = 0;
     while(l != NULL && i < 10)
