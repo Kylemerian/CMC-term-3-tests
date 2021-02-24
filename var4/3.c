@@ -40,7 +40,7 @@ int main()
         dup2(fd[1], 1);
         close(fd[0]);
         close(fd[1]);
-        execlp("ls", "ls", "-F", "../", NULL);
+        execlp("ls", "ls", "-F", NULL);
     }
     close(fd[1]);
     while ((rc = read(fd[0], &buffer, sizeof(buffer))))
