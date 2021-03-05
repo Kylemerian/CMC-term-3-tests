@@ -48,7 +48,7 @@ int main()
         i = 0;
         while (i < rc)
         {
-            if ((buffer[i] == '/') && (j < 70) && (j > 0))
+            if ((buffer[i] == '/') && (j > 0))
                 add(&subdirs, word, j);
             else if (buffer[i] == '\n')
                 j = 0;
