@@ -57,8 +57,7 @@ void add(struct list **l, char *buffer, int size)
     int i;
     if (buffer[0] != '\0') {
         buffer[size] = '\0';
-        if (*l != NULL) 
-        {
+        if (*l != NULL) {
             if (compare((*l)->word, buffer))
                 (*l)->count++;
             else
