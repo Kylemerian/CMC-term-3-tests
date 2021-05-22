@@ -8,6 +8,7 @@ int ended = 0;
 
 void hdl(int signo)
 {
+    signal(SIGCHLD, hdl);
     ended = 1;
 };
 
