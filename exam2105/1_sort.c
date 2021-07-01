@@ -10,33 +10,21 @@ struct list
     struct list *next;
 };
 
-int try_to_inc(struct list *l, char *target)
-{
-    while (l != NULL)
-    {
-        if (!strcmp(l->word, target))
-        {
-            (l->frq)++;
-            return 1;
-        }
-        l = l->next;
-    }
-    return 0;
-}
-
 void add_word(struct list **l, char *buff, int size)
 {
-    if (buff[0] != '\0') 
+    if (*l == NULL)
     {
-        if (*l == NULL)
-        {
-            *l = malloc(sizeof(struct list));
-            (*l)->len = size;
-            (*l)->frq = 0;
-            (*l)->word = malloc(size + 1);
-            (*l)->next = NULL;
-            strncpy((*l)->word, buff, size + 1);
-        }
+        *l = malloc(sizeof(struct list));
+        (*l)->len = size;
+        (*l)->frq = 0;
+        (*l)->word = malloc(size + 1);
+        (*l)->next = NULL;
+        strncpy((*l)->word, buff, size + 1);
+    }
+    else
+    {
+        if (!strcmp((*l)->word, buff))
+            (*l)->frq++;
         else
             add_word(&((*l)->next), buff, size);
     }
@@ -81,16 +69,16 @@ int main(int argc, char const *argv[])
     int c;
     int i = 0;
     int old_len = 0;
-    int buff_len = 32;
+    int buff_size = 32;
     char *tmp = NULL;
-    char *buff = malloc(buff_len * sizeof(buff));
+    char *buff = malloc(buff_size * sizeof(buff));
     struct list *l = NULL;
     while ((c = getchar()) != -1)
     {
         if (((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'))
             || ((c >= '0') && (c <= '9')))
         {
-            if (i < buff_len - 1)
+            if (i < buff_size - 1)
             {
                 buff[i] = c;
                 buff[i + 1] = '\0';
@@ -107,7 +95,7 @@ int main(int argc, char const *argv[])
         }
         else
             {
-                if (!try_to_inc(l, buff))
+                if (i != 0)
                     add_word(&l, buff, i);
                 buff[0] = '\0';
                 i = 0;
